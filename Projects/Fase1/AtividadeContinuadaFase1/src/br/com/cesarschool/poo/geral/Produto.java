@@ -1,16 +1,16 @@
 package br.com.cesarschool.poo.geral;
 /**
- * @author Anônimo
+ * @author Anï¿½nimo
  *
- * Implementação primária para efeito didático.
- * Será enormemente melhorada!!!
+ * Implementaï¿½ï¿½o primï¿½ria para efeito didï¿½tico.
+ * Serï¿½ enormemente melhorada!!!
  */
 public class Produto {
 	public static final int SUCESSO = 0;
 	public static final int NOME_NAO_INFORMADO = 1; 
 	public static final int NOME_MUITO_CURTO = 2; 
 	public static final int TAMANHO_MINIMO_NOME = 3;
-	
+	//IntellithebestJ
 	private long codigo;
 	private String nome;
 	private double preco;
@@ -49,9 +49,9 @@ public class Produto {
 	}
 
 	/**
-	 * O conceito de código válido é codigo > 0
+	 * O conceito de cï¿½digo vï¿½lido ï¿½ codigo > 0
 	 * 
-	 * @return true se o código for válido e false caso contrário.
+	 * @return true se o cï¿½digo for vï¿½lido e false caso contrï¿½rio.
 	 */
 	boolean codigoValido() {
 		if (this.codigo <= 0) {
@@ -60,13 +60,13 @@ public class Produto {
 		return true;
 	}
 	/**
-	 * Método responsável por valida o atributo nome
+	 * Mï¿½todo responsï¿½vel por valida o atributo nome
 	 * 
-	 * O nome é obrigatório. 
+	 * O nome ï¿½ obrigatï¿½rio. 
 	 * 
-	 * @return Caso o nome não esteja preenchido, retorna NOME_NAO_INFORMADO.
+	 * @return Caso o nome nï¿½o esteja preenchido, retorna NOME_NAO_INFORMADO.
 	 *         Caso o nome tenha menos do que TAMANHO_MINIMO_NOME caracteres,
-	 *         retorna NOME_MUITO_CURTO. Caso contrário, retorna SUCESSO. 
+	 *         retorna NOME_MUITO_CURTO. Caso contrï¿½rio, retorna SUCESSO. 
 	 */
 	int validarNome() {
 		if (nome == null || nome.trim().equals("")) {
