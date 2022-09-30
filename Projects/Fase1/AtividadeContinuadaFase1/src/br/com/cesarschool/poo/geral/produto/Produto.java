@@ -1,4 +1,5 @@
-package br.com.cesarschool.poo.geral;
+package br.com.cesarschool.poo.geral.produto;
+
 /**
  * @author An�nimo
  *
