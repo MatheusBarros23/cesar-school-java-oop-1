@@ -68,6 +68,7 @@ public class Conta {
 	}
 
 	public Escore calcularEscore() {
+		/*
 		if (status == Status.BLOQUEADA) {
 			System.out.println("A conta está bloqueada");
 			return Escore.INDISPONIVEL;
@@ -75,7 +76,7 @@ public class Conta {
 		else if (status == Status.ENCERRADA) {
 			System.out.println("A conta foi encerrada");
 			return Escore.INDISPONIVEL; 
-		}
+		}*/
 		LocalDate hoje = LocalDate.now();
 		long tempoVida = hoje.toEpochDay() - dataAbertura.toEpochDay();
 		double valor = tempoVida*2.0 + saldo*3.0;

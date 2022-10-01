@@ -9,7 +9,7 @@ public class TelaConta {
 	
 	public void executarTela() {
 		while (true) {
-			imprimirOpcoes();
+			Imprimir.opcoes();
 			int entrada = SC.nextInt();
 			escolherEntrada(entrada);
 		}
@@ -52,20 +52,6 @@ public class TelaConta {
 				System.out.println("Opcao invalida");
 				break;
 		}
-	}
-	
-	public void imprimirOpcoes() {		
-		System.out.println("1- Incluir");
-		System.out.println("2- Alterar");
-		System.out.println("3- Encerrar");
-		System.out.println("4- Bloquear");
-		System.out.println("5- Ativar");
-		System.out.println("6- Excluir");
-		System.out.println("7- Buscar");
-		System.out.println("8- Creditar");
-		System.out.println("9- Debitar");
-		System.out.println("10- Sair");
-		System.out.print("Digite a opcao: ");
 	}	
 	
 	public void incluir() {
@@ -73,10 +59,17 @@ public class TelaConta {
 		repositorio.incluir(novaConta);
 	}
 	
+	public Conta pegarNovaConta() {
+		long posicao = TratarEntrada.pegarNumero();
+		Status statusSelecionado = TratarEntrada.pegarStatus();
+		LocalDate data = TratarEntrada.pegarData();
+		return new Conta(posicao, statusSelecionado, data);
+	}
+	
 	public void alterar() {
 		Conta conta = buscar();
 		if (conta != null) {
-			int resultado = repositorio.alterar(conta.getNumero(), LocalDate.now());
+			int resultado = repositorio.alterar(conta.getNumero(), TratarEntrada.pegarData());
 			if (resultado == 0) {
 				System.out.println("Conta alterada com sucesso");
 			}
@@ -84,7 +77,7 @@ public class TelaConta {
 	}
 	
 	public void excluir() {
-		long numero = pegarNumero();
+		long numero = TratarEntrada.pegarNumero();
 		if (numero > 0) {
 			int resultado = repositorio.excluir(numero);
 			if (resultado == 0) {
@@ -94,22 +87,22 @@ public class TelaConta {
 	}
 	
 	public Conta buscar() {
-		long numero = pegarNumero();
+		long numero = TratarEntrada.pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
 			return null;
 		}
-		imprimirConta(aux);
+		Imprimir.conta(aux);
 		return aux;
 	}
 	
 	public void operacao(Operacoes operacao) {
-		long numero = pegarNumero();
+		long numero = TratarEntrada.pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
 			return;
 		}
-		double valor = pegarValor();
+		double valor = TratarEntrada.pegarValor();
 		if (operacao == Operacoes.CREDITAR) {
 			creditar(aux, valor);
 		} else if (operacao == Operacoes.DEBITAR) {
@@ -132,7 +125,7 @@ public class TelaConta {
 	}
 	
 	public void alterarStatus(Status status) {
-		long numero = pegarNumero();
+		long numero = TratarEntrada.pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
 			return;
@@ -186,105 +179,5 @@ public class TelaConta {
 		System.out.println("O status da conta " + conta.getNumero() + " foi alterado");
 		System.out.println("Anterior: " + anterior);
 		System.out.println("Novo: " + conta.getStatus());
-	}
-	
-	public Conta pegarNovaConta() {
-		System.out.print("Informe numero da conta: ");
-		int posicao = SC.nextInt();
-		Status statusSelecionado = pegarStatus();
-		LocalDate data = pegarData();
-		return new Conta(posicao, statusSelecionado, data);
-	}
-	
-	public Status pegarStatus() {
-		int numeroStatus = -1;
-		Status status = null;
-		do {
-			System.out.print("Informe o status: ");
-			numeroStatus = SC.nextInt();
-			switch (numeroStatus) {
-				case 1:
-					status = Status.ATIVA;
-					break;
-				case 2: 
-					status = Status.BLOQUEADA;
-					break;
-				case 3:
-					status = Status.ENCERRADA;
-				default:
-					System.out.println("Status desconhecido");
-					break;
-			}
-		} while (numeroStatus < 1 || numeroStatus > Status.values().length);
-		return status;
-	}
-	
-	
-	public LocalDate pegarData() {
-		LocalDate dataInput = null;
-		LocalDate hoje = LocalDate.now();
-		LocalDate dataLimite = hoje.minusMonths(1);
-		int dia, mes, ano;
-		boolean invalidDataInput = true;
-		
-		while(invalidDataInput) {
-			System.out.print("Dia: ");
-			dia = SC.nextInt();
-			System.out.print("Mes: ");
-			mes = SC.nextInt();
-			System.out.print("Ano: ");
-			ano = SC.nextInt();
-			dataInput = LocalDate.of(ano, mes, dia);
-			
-			if (dataInput.equals(hoje)) {
-				invalidDataInput = false;
-				System.out.println("Validado!");
-			} else if (dataInput.isAfter(dataLimite) && dataInput.isBefore(hoje)) {
-				invalidDataInput = false;
-				System.out.println("Validado!");
-			} else {
-				System.out.println("Invalido");
-			}
-		}
-		return dataInput;
-	}
-	
-	public void imprimirConta(Conta conta) {
-		System.out.println("Numero: " + conta.getNumero());
-		System.out.println("Status: " + conta.calcularEscore());
-		System.out.println("Data de abertura: "+ conta.getDataAbertura());
-		System.out.printf("Saldo: R$%.2f\n", conta.getSaldo());
-	}
-	
-	public long pegarNumero() {
-		long numero = -1L;
-		do {
-			System.out.print("Informe o numero da conta: ");
-			numero = SC.nextLong();
-			if (numero <= 0) {
-				System.out.println("Informe um numero valido");
-			}
-			else if (numero == -1) {
-				System.out.println("Abortando operacao...");
-				return -1L;
-			}
-		} while (numero <= 0);
-		return numero;
-	}
-	
-	public double pegarValor() {
-		double valor = -1.0;
-		do {
-			System.out.print("Informe o valor: ");
-			valor = SC.nextDouble();
-			if (valor <= 0) {
-				System.out.println("Informe um valor valido");
-			}
-			else if (valor == -1) {
-				System.out.println("Abortando operacao...");
-				return -1.0;
-			}
-		} while (valor <= 0);
-		return valor;
 	}
 }
