@@ -69,11 +69,10 @@ public class TelaConta {
 	}	
 	
 	private void incluir() {
-		Conta novaConta = obterConta();
-		int resultado = repositorio.incluir(novaConta);
-		if (resultado == 0) {
-			System.out.println("Conta adicionada com sucesso");
-		}
+		int posicao = SC.nextInt();
+		Conta novaConta = obterConta(posicao);
+		System.out.print("Informar a posicao: ");
+		repositorio.incluir(novaConta, posicao);
 	}
 	
 	private void alterar() {
@@ -191,10 +190,10 @@ public class TelaConta {
 		System.out.println("Novo: " + conta.getStatus());
 	}
 	
-	private Conta obterConta() {
-		int numero = repositorio.getTamanho() + 1;
+	private Conta obterConta(int posicao) {
+		int numeroStatus = SC.nextInt();
 		LocalDate data = LocalDate.now();
-		return new Conta(numero, Status.ATIVA, data);
+		return new Conta(posicao, numeroStatus, data);
 	}
 	
 	private void imprimirConta(Conta conta) {

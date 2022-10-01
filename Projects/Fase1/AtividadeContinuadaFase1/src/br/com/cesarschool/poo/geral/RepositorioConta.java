@@ -6,7 +6,9 @@ public class RepositorioConta {
 	private static final int SUCESSO = 0;
 	private static final int ERRO_MAX_CONTAS = -1;
 	private static final int CONTA_NAO_ACHADA = -1;
-	private static final int ERRO_DESCONHECIDO = -2;
+	private static final int POSICAO_INVALIDA = -2;
+	private static final int POSICAO_OCUPADA = -3;
+	private static final int ERRO_DESCONHECIDO = -4;
 	
 	
 	private static final int MAX_CONTAS = 1024;
@@ -17,23 +19,25 @@ public class RepositorioConta {
 		return tamanho;
 	}
 
-	public int incluir(Conta conta) {
+	public int incluir(Conta conta, int pos) {
 		if (tamanho == MAX_CONTAS) {
 			System.out.println("Tamanho máximo de contas atingido");
 			return ERRO_MAX_CONTAS;
 		}
-		for (int i = 0; i < cadastroConta.length; i++) {
-			if (cadastroConta[i] == null) {
-				cadastroConta[i] = conta;
-				tamanho++;
-				return SUCESSO;
-			}
+		if (pos < 0 || pos >= MAX_CONTAS) {
+			System.out.println("Tamanho invalido");
+			return POSICAO_INVALIDA;
 		}
-		System.out.println("Erro desconhecido");
-		return ERRO_DESCONHECIDO;
+		if (cadastroConta[pos] == null) {
+			System.out.println("Conta cadastrada com sucesso");
+			cadastroConta[pos] = conta;
+			return SUCESSO;
+		}
+		System.out.println("A posicao ocupada esta ocupada");
+		return POSICAO_OCUPADA;
 	}
 	
-	public int buscar(long numero) {
+	public int buscar(long numero) { 
 		for (int i = 0; i < cadastroConta.length; i++) {
 			if (cadastroConta[i] != null && cadastroConta[i].getNumero() == numero) {
 				return i;
