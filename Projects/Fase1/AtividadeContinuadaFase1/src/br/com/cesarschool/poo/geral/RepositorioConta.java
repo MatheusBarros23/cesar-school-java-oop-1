@@ -12,25 +12,25 @@ public class RepositorioConta {
 	
 	
 	private static final int MAX_CONTAS = 1024;
-	private Conta[] cadastroConta = new Conta[MAX_CONTAS];
+	private Conta[] vetorContas = new Conta[MAX_CONTAS];
 	private int tamanho = 0;
 	
 	public int getTamanho() {
 		return tamanho;
 	}
 
-	public int incluir(Conta conta, int pos) {
+	public int incluir(Conta conta) {
 		if (tamanho == MAX_CONTAS) {
 			System.out.println("Tamanho máximo de contas atingido");
 			return ERRO_MAX_CONTAS;
 		}
-		if (pos < 0 || pos >= MAX_CONTAS) {
+		if (conta.getNumero() < 0 || conta.getNumero() >= MAX_CONTAS) {
 			System.out.println("Tamanho invalido");
 			return POSICAO_INVALIDA;
 		}
-		if (cadastroConta[pos] == null) {
+		if (vetorContas[(int) conta.getNumero()] == null) {
 			System.out.println("Conta cadastrada com sucesso");
-			cadastroConta[pos] = conta;
+			vetorContas[(int) conta.getNumero()] = conta;
 			return SUCESSO;
 		}
 		System.out.println("A posicao ocupada esta ocupada");
@@ -38,8 +38,8 @@ public class RepositorioConta {
 	}
 	
 	public int buscar(long numero) { 
-		for (int i = 0; i < cadastroConta.length; i++) {
-			if (cadastroConta[i] != null && cadastroConta[i].getNumero() == numero) {
+		for (int i = 0; i < vetorContas.length; i++) {
+			if (vetorContas[i] != null && vetorContas[i].getNumero() == numero) {
 				return i;
 			}
 		}
@@ -52,7 +52,7 @@ public class RepositorioConta {
 		if (indice < 0) {
 			return null;
 		}
-		return cadastroConta[indice];
+		return vetorContas[indice];
 	}
 	
 	public int alterar(long numero, LocalDate novaDataAbertura) {
@@ -60,7 +60,7 @@ public class RepositorioConta {
 		if (indice < 0) {
 			return CONTA_NAO_ACHADA;
 		}
-		cadastroConta[indice].setDataAbertura(novaDataAbertura);
+		vetorContas[indice].setDataAbertura(novaDataAbertura);
 		return SUCESSO;
 	}
 	
@@ -69,7 +69,7 @@ public class RepositorioConta {
 		if (indice < 0) {
 			return CONTA_NAO_ACHADA;
 		}
-		cadastroConta[indice] = null;
+		vetorContas[indice] = null;
 		tamanho--;
 		return SUCESSO;
 	}

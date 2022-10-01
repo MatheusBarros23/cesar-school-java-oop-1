@@ -54,7 +54,7 @@ public class TelaConta {
 		}
 	}
 	
-	private void imprimirOpcoes() {		
+	public void imprimirOpcoes() {		
 		System.out.println("1- Incluir");
 		System.out.println("2- Alterar");
 		System.out.println("3- Encerrar");
@@ -68,14 +68,12 @@ public class TelaConta {
 		System.out.print("Digite a opcao: ");
 	}	
 	
-	private void incluir() {
-		int posicao = SC.nextInt();
-		Conta novaConta = obterConta(posicao);
-		System.out.print("Informar a posicao: ");
-		repositorio.incluir(novaConta, posicao);
+	public void incluir() {
+		Conta novaConta = pegarNovaConta();
+		repositorio.incluir(novaConta);
 	}
 	
-	private void alterar() {
+	public void alterar() {
 		Conta conta = buscar();
 		if (conta != null) {
 			int resultado = repositorio.alterar(conta.getNumero(), LocalDate.now());
@@ -85,7 +83,7 @@ public class TelaConta {
 		}
 	}
 	
-	private void excluir() {
+	public void excluir() {
 		long numero = pegarNumero();
 		if (numero > 0) {
 			int resultado = repositorio.excluir(numero);
@@ -95,7 +93,7 @@ public class TelaConta {
 		}
 	}
 	
-	private Conta buscar() {
+	public Conta buscar() {
 		long numero = pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
@@ -105,7 +103,7 @@ public class TelaConta {
 		return aux;
 	}
 	
-	private void operacao(Operacoes operacao) {
+	public void operacao(Operacoes operacao) {
 		long numero = pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
@@ -121,19 +119,19 @@ public class TelaConta {
 		}
 	}
 	
-	private void creditar(Conta conta, double valor) {
+	public void creditar(Conta conta, double valor) {
 		if (conta.creditar(valor) == 0) {
 			System.out.println("Novo saldo: " + conta.getSaldo());
 		}
 	}
 	
-	private void debitar(Conta conta, double valor) {
+	public void debitar(Conta conta, double valor) {
 		if (conta.debitar(valor) == 0) {
 			System.out.println("Novo saldo: " + conta.getSaldo());
 		}
 	}
 	
-	private void alterarStatus(Status status) {
+	public void alterarStatus(Status status) {
 		long numero = pegarNumero();
 		Conta aux = repositorio.retornarConta(numero);
 		if (aux == null) {
@@ -150,7 +148,7 @@ public class TelaConta {
 		}
 	}
 	
-	private void encerrar(Conta conta) {
+	public void encerrar(Conta conta) {
 		if (conta.getStatus() != Status.ENCERRADA) {
 			Status anterior = conta.getStatus();
 			conta.setStatus(Status.ENCERRADA);
@@ -158,7 +156,7 @@ public class TelaConta {
 		}
 	}
 	
-	private void bloquear(Conta conta) {
+	public void bloquear(Conta conta) {
 		if (conta.getStatus() == Status.BLOQUEADA) {
 			System.out.println("A conta ja esta bloqueada");
 		}
@@ -171,7 +169,7 @@ public class TelaConta {
 		}
 	}
 	
-	private void desbloquear(Conta conta) {
+	public void desbloquear(Conta conta) {
 		if (conta.getStatus() == Status.ATIVA) {
 			System.out.println("A conta ja esta ativa");
 		}
@@ -184,26 +182,81 @@ public class TelaConta {
 		}
 	}
 	
-	private void printarMudanca(Status anterior, Conta conta) {
+	public void printarMudanca(Status anterior, Conta conta) {
 		System.out.println("O status da conta " + conta.getNumero() + " foi alterado");
 		System.out.println("Anterior: " + anterior);
 		System.out.println("Novo: " + conta.getStatus());
 	}
 	
-	private Conta obterConta(int posicao) {
-		int numeroStatus = SC.nextInt();
-		LocalDate data = LocalDate.now();
-		return new Conta(posicao, numeroStatus, data);
+	public Conta pegarNovaConta() {
+		System.out.print("Informe numero da conta: ");
+		int posicao = SC.nextInt();
+		Status statusSelecionado = pegarStatus();
+		LocalDate data = pegarData();
+		return new Conta(posicao, statusSelecionado, data);
 	}
 	
-	private void imprimirConta(Conta conta) {
+	public Status pegarStatus() {
+		int numeroStatus = -1;
+		Status status = null;
+		do {
+			System.out.print("Informe o status: ");
+			numeroStatus = SC.nextInt();
+			switch (numeroStatus) {
+				case 1:
+					status = Status.ATIVA;
+					break;
+				case 2: 
+					status = Status.BLOQUEADA;
+					break;
+				case 3:
+					status = Status.ENCERRADA;
+				default:
+					System.out.println("Status desconhecido");
+					break;
+			}
+		} while (numeroStatus < 1 || numeroStatus > Status.values().length);
+		return status;
+	}
+	
+	
+	public LocalDate pegarData() {
+		LocalDate dataInput = null;
+		LocalDate hoje = LocalDate.now();
+		LocalDate dataLimite = hoje.minusMonths(1);
+		int dia, mes, ano;
+		boolean invalidDataInput = true;
+		
+		while(invalidDataInput) {
+			System.out.print("Dia: ");
+			dia = SC.nextInt();
+			System.out.print("Mes: ");
+			mes = SC.nextInt();
+			System.out.print("Ano: ");
+			ano = SC.nextInt();
+			dataInput = LocalDate.of(ano, mes, dia);
+			
+			if (dataInput.equals(hoje)) {
+				invalidDataInput = false;
+				System.out.println("Validado!");
+			} else if (dataInput.isAfter(dataLimite) && dataInput.isBefore(hoje)) {
+				invalidDataInput = false;
+				System.out.println("Validado!");
+			} else {
+				System.out.println("Invalido");
+			}
+		}
+		return dataInput;
+	}
+	
+	public void imprimirConta(Conta conta) {
 		System.out.println("Numero: " + conta.getNumero());
 		System.out.println("Status: " + conta.calcularEscore());
 		System.out.println("Data de abertura: "+ conta.getDataAbertura());
 		System.out.printf("Saldo: R$%.2f\n", conta.getSaldo());
 	}
 	
-	private long pegarNumero() {
+	public long pegarNumero() {
 		long numero = -1L;
 		do {
 			System.out.print("Informe o numero da conta: ");
@@ -219,7 +272,7 @@ public class TelaConta {
 		return numero;
 	}
 	
-	private double pegarValor() {
+	public double pegarValor() {
 		double valor = -1.0;
 		do {
 			System.out.print("Informe o valor: ");
