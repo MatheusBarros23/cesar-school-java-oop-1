@@ -78,10 +78,11 @@ public class TratarEntrada {
 					status = Status.ATIVA;
 					break;
 				case 2: 
-					status = Status.BLOQUEADA;
+					status = Status.ENCERRADA;
 					break;
 				case 3:
-					status = Status.ENCERRADA;
+					
+					status = Status.BLOQUEADA;
 					break;
 				default:
 					System.out.println("Status desconhecido");

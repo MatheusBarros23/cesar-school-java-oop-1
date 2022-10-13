@@ -60,7 +60,7 @@ public class Conta {
 			return VALOR_NEGATIVO;
 		}
 		else if (status == Status.BLOQUEADA) {
-			System.out.println("A conta " + numero + " foi encerrada. Abortando operação...");
+			System.out.println("A conta " + numero + " foi bloqueada. Abortando operação...");
 			return CONTA_BLOQUEADA;
 		}
 		saldo -= valorDebitado;

@@ -10,10 +10,25 @@ public class RepositorioConta {
 	private static final int POSICAO_OCUPADA = -3;
 	private static final int ERRO_DESCONHECIDO = -4;
 	
+	private static RepositorioConta repositorio_instance = null; 
+	
+	private RepositorioConta() {
+		
+	}
+	
+	public static RepositorioConta getInstance() 
+    { 
+        if (repositorio_instance == null) 
+        	repositorio_instance = new RepositorioConta(); 
+  
+        return repositorio_instance; 
+    } 
+		
 	
 	private static final int MAX_CONTAS = 1024;
 	private Conta[] vetorContas = new Conta[MAX_CONTAS];
 	private int tamanho = 0;
+
 	
 	public int getTamanho() {
 		return tamanho;

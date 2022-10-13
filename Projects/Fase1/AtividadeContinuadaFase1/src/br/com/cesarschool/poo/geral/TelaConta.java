@@ -4,11 +4,12 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class TelaConta {
-	private RepositorioConta repositorio = new RepositorioConta();
+	private RepositorioConta repositorio = RepositorioConta.getInstance();
 	private static final Scanner SC = new Scanner(System.in);
 	
 	public void executarTela() {
 		while (true) {
+			System.out.println();
 			Imprimir.opcoes();
 			int entrada = SC.nextInt();
 			escolherEntrada(entrada);
@@ -74,6 +75,7 @@ public class TelaConta {
 				System.out.println("Conta alterada com sucesso");
 			}
 		}
+		Imprimir.conta(conta);
 	}
 	
 	public void excluir() {
@@ -110,11 +112,14 @@ public class TelaConta {
 		} else {
 			System.out.println("Operacao desconhecida");
 		}
+		
+		Imprimir.conta(aux);
 	}
 	
 	public void creditar(Conta conta, double valor) {
 		if (conta.creditar(valor) == 0) {
 			System.out.println("Novo saldo: " + conta.getSaldo());
+		
 		}
 	}
 	
@@ -139,6 +144,8 @@ public class TelaConta {
 		} else {
 			System.out.println("Status desconhecido");
 		}
+		
+		Imprimir.conta(aux);
 	}
 	
 	public void encerrar(Conta conta) {
@@ -180,4 +187,10 @@ public class TelaConta {
 		System.out.println("Anterior: " + anterior);
 		System.out.println("Novo: " + conta.getStatus());
 	}
+	
+	public void alterar(Conta conta) {
+		
+	}
+	
+	
 }
