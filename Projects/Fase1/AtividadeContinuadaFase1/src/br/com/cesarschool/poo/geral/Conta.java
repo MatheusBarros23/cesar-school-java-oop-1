@@ -68,18 +68,18 @@ public class Conta {
 	}
 
 	public Escore calcularEscore() {
-		/*
+		double valor = 0;
 		if (status == Status.BLOQUEADA) {
 			System.out.println("A conta está bloqueada");
 			return Escore.INDISPONIVEL;
 		}
 		else if (status == Status.ENCERRADA) {
-			System.out.println("A conta foi encerrada");
-			return Escore.INDISPONIVEL; 
-		}*/
-		LocalDate hoje = LocalDate.now();
-		long tempoVida = hoje.toEpochDay() - dataAbertura.toEpochDay();
-		double valor = tempoVida*2.0 + saldo*3.0;
+			valor = 0; 
+		} else {
+			LocalDate hoje = LocalDate.now();
+			long tempoVida = hoje.toEpochDay() - dataAbertura.toEpochDay();
+			valor = tempoVida*2.0 + saldo*3.0;
+		}
 		return selecionarEscore(valor);
 	}
 	

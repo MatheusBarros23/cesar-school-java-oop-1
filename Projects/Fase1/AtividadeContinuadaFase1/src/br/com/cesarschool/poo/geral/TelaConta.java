@@ -57,11 +57,17 @@ public class TelaConta {
 	
 	public void incluir() {
 		Conta novaConta = pegarNovaConta();
+		if (novaConta == null) {
+			return;
+		}
 		repositorio.incluir(novaConta);
 	}
 	
 	public Conta pegarNovaConta() {
 		long posicao = TratarEntrada.pegarNumero();
+		if (repositorio.temNumero(posicao)) {
+			return null;
+		}
 		Status statusSelecionado = TratarEntrada.pegarStatus();
 		LocalDate data = TratarEntrada.pegarData();
 		return new Conta(posicao, statusSelecionado, data);
@@ -70,6 +76,7 @@ public class TelaConta {
 	public void alterar() {
 		Conta conta = buscar();
 		if (conta != null) {
+			System.out.println("Conta achada! Verifique os dados acima e insira a nova data");
 			int resultado = repositorio.alterar(conta.getNumero(), TratarEntrada.pegarData());
 			if (resultado == 0) {
 				System.out.println("Conta alterada com sucesso");
@@ -149,7 +156,10 @@ public class TelaConta {
 	}
 	
 	public void encerrar(Conta conta) {
-		if (conta.getStatus() != Status.ENCERRADA) {
+		if (conta.getStatus() == Status.ENCERRADA) {
+			System.out.println("A conta ja esta encerrada");
+		}
+		else if (conta.getStatus() != Status.ENCERRADA) {
 			Status anterior = conta.getStatus();
 			conta.setStatus(Status.ENCERRADA);
 			printarMudanca(anterior, conta);
@@ -186,10 +196,7 @@ public class TelaConta {
 		System.out.println("O status da conta " + conta.getNumero() + " foi alterado");
 		System.out.println("Anterior: " + anterior);
 		System.out.println("Novo: " + conta.getStatus());
-	}
-	
-	public void alterar(Conta conta) {
-		
+		System.out.println();
 	}
 	
 	

@@ -6,8 +6,8 @@ public class RepositorioConta {
 	private static final int SUCESSO = 0;
 	private static final int ERRO_MAX_CONTAS = -1;
 	private static final int CONTA_NAO_ACHADA = -1;
-	private static final int POSICAO_INVALIDA = -2;
-	private static final int POSICAO_OCUPADA = -3;
+	//private static final int POSICAO_INVALIDA = -2;
+	//private static final int POSICAO_OCUPADA = -3;
 	private static final int ERRO_DESCONHECIDO = -4;
 	
 	private static RepositorioConta repositorio_instance = null; 
@@ -39,23 +39,36 @@ public class RepositorioConta {
 			System.out.println("Tamanho máximo de contas atingido");
 			return ERRO_MAX_CONTAS;
 		}
-		if (conta.getNumero() < 0 || conta.getNumero() >= MAX_CONTAS) {
-			System.out.println("Tamanho invalido");
-			return POSICAO_INVALIDA;
+		for(int i = 0; i < vetorContas.length; i++) {
+			if (vetorContas[i] == null) {
+				vetorContas[i] = conta;
+				tamanho++;
+				return SUCESSO;
+			}
 		}
-		if (vetorContas[(int) conta.getNumero()] == null) {
-			System.out.println("Conta cadastrada com sucesso");
-			vetorContas[(int) conta.getNumero()] = conta;
-			return SUCESSO;
+		return ERRO_DESCONHECIDO;
+	}
+	
+	public boolean temNumero(long numero) {
+		for (int i = 0; i < vetorContas.length; i++) {
+			if (vetorContas[i] == null) {
+				continue;
+			}
+			else if (vetorContas[i].getNumero() == numero) {
+				System.out.println("O numero informado ja existe");
+				return true;
+			}
 		}
-		System.out.println("A posicao ocupada esta ocupada");
-		return POSICAO_OCUPADA;
+		return false;
 	}
 	
 	public int buscar(long numero) { 
-		for (int i = 0; i < vetorContas.length; i++) {
-			if (vetorContas[i] != null && vetorContas[i].getNumero() == numero) {
-				return i;
+		for (int posicao = 0; posicao < vetorContas.length; posicao++) {
+			if (vetorContas[posicao] == null) {
+				continue;
+			}
+			else if (vetorContas[posicao].getNumero() == numero) {
+				return posicao;
 			}
 		}
 		System.out.println("A conta " + numero + " nao foi localizada");

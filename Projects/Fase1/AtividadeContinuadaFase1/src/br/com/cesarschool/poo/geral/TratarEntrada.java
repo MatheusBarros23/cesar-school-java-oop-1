@@ -56,12 +56,12 @@ public class TratarEntrada {
 			
 			if (dataInput.equals(hoje)) {
 				invalidDataInput = false;
-				System.out.println("Validado!");
+				//System.out.println("Validado!");
 			} else if (dataInput.isAfter(dataLimite) && dataInput.isBefore(hoje)) {
 				invalidDataInput = false;
-				System.out.println("Validado!");
+				//System.out.println("Validado!");
 			} else {
-				System.out.println("Invalido");
+				System.out.println("Data invalida");
 			}
 		}
 		return dataInput;

@@ -1,5 +1,7 @@
 package br.com.cesarschool.poo.geral;
 
+import java.time.format.DateTimeFormatter;
+
 public class Imprimir {
 	public static void opcoes() {
 		System.out.println("1- Incluir");
@@ -19,7 +21,9 @@ public class Imprimir {
 		System.out.println("Numero: " + conta.getNumero());
 		System.out.println("Escore: " + conta.calcularEscore());
 		System.out.println("Status: " + conta.getStatus());
-		System.out.println("Data de abertura: "+ conta.getDataAbertura());
+		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String data = conta.getDataAbertura().format(formatador);
+		System.out.println("Data de abertura: "+ data);
 		System.out.printf("Saldo: R$%.2f\n", conta.getSaldo());
 	}
 }
